@@ -15,11 +15,15 @@ COPY ./requirements-dev.txt requirements-dev.txt
 
 RUN pip install --upgrade pip && pip install -r requirements-dev.txt --user
 
+COPY . .
+
 
 FROM base as production
 
 COPY ./requirements-prod.txt requirements-prod.txt
 
 RUN pip install --upgrade pip && pip install -r requirements-dev.txt --user
+
+COPY . .
 
 ENTRYPOINT [ "docker-entrypoint.sh" ]
