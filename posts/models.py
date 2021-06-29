@@ -9,7 +9,7 @@ class IdModelMixin(models.Model):
     # Apesar que no exemplo ser uuid3 não foi informado o namespace e name para geração da id
     id = models.UUIDField(
         primary_key=True,
-        default=uuid4(),
+        default=uuid4,
         unique=True,
         editable=False,
     )
