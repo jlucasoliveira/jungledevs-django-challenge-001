@@ -14,3 +14,27 @@ class AuthorViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = models.Category.objects
     serializer_class = api_serializers.CategorySerializer
+
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = models.Article.objects.prefetch_related("category", "author")
+    serializer_class = api_serializers.ArticleSerializer
+
+
+class ArticleReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Article.objects.prefetch_related("category", "author")
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            if self.request.user.is_anonymous:
+                return api_serializers.ArticleSerializerPublic
+            return api_serializers.ArticleSerializer
+        elif self.action == "list":
+            return api_serializers.ArticleSerializerList
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category = self.request.query_params.get("category", None)
+        if category:
+            queryset = queryset.filter(category__slug=category)
+        return queryset
