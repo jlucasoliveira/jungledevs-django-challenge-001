@@ -9,8 +9,8 @@ services:
       - "8000:8000"
       - "5678:5678"
     env_file: .env
-    depends_on: 
-      db
+    depends_on:
+      - db
 
   db:
     image: postgres:12
@@ -23,6 +23,6 @@ services:
       POSTGRES_PASSWORD: "challenge"
       POSTGRES_DB: "challenge"
 
-volumes: 
+volumes:
   challenge_pgdata:
     external: true

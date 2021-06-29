@@ -31,5 +31,8 @@ insert_final_newline = ignore
 [docs/**.txt]
 max_line_length = 79
 
-[*.yml|*.yaml]
+[*.yml]
+indent_size = 2
+
+[*.yaml]
 indent_size = 2
