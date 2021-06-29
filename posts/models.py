@@ -59,6 +59,9 @@ class Category(IdModelMixin):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class Article(IdModelMixin):
     title = models.CharField(verbose_name=_("titulo"), max_length=150)
@@ -79,3 +82,6 @@ class Article(IdModelMixin):
     class Meta:
         verbose_name = _("artigo")
         ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
