@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 119
-include = "\.pyi?$"
-exclude = """
+include = '\.pyi?$'
+exclude = '''
 (
     \.git
     | \.venv
@@ -9,4 +9,4 @@ exclude = """
     |  news/wsgi\.py
     | manage\.py
 )
-"""
+'''
