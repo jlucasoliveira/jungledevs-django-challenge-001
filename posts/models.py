@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from django.db import models
 from django.utils.text import slugify
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 
@@ -57,3 +58,24 @@ class Category(IdModelMixin):
         if not self.slug or self._actual_slug != self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
+
+class Article(IdModelMixin):
+    title = models.CharField(verbose_name=_("titulo"), max_length=150)
+    summary = models.CharField(verbose_name=_("sumário"), max_length=200)
+    author = models.ForeignKey(
+        to="posts.Author",
+        on_delete=models.deletion.CASCADE,
+        verbose_name=_("autor"),
+    )
+    category = models.ForeignKey(to="posts.Category", on_delete=models.deletion.CASCADE, verbose_name=_("categoria"))
+    first_paragraph = models.TextField(
+        verbose_name=_("primeiro paragrafo"),
+        max_length=450,
+    )
+    body = models.TextField(verbose_name=_("conteúdo"))
+    created_at = models.DateTimeField(verbose_name=_("data de criação"), default=now)
+
+    class Meta:
+        verbose_name = _("artigo")
+        ordering = ["-created_at"]
