@@ -9,3 +9,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = models.Author.objects
     serializer_class = api_serializers.AuthorSerializer
     parser_classes = [MultiPartParser]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = models.Category.objects
+    serializer_class = api_serializers.CategorySerializer

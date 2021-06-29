@@ -7,3 +7,9 @@ from posts import models
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("nane",)
+
+
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)

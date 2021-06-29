@@ -2,6 +2,7 @@ from os import path
 from uuid import uuid4
 
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
@@ -38,3 +39,21 @@ class Author(IdModelMixin):
 
     def __str__(self):
         return self.name
+
+
+class Category(IdModelMixin):
+    name = models.CharField(verbose_name=_("nome"), max_length=150)
+    slug = models.SlugField(verbose_name=_("identificador"), unique=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("categoria")
+        ordering = ["slug"]
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._actual_slug = self.name
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.slug or self._actual_slug != self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
