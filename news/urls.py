@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
+from posts.api.routes import router as posts_routes
 from users.api.routes import router as users_routes
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(users_routes.urls)),
+    path("api/", include(posts_routes.urls)),
 ]
