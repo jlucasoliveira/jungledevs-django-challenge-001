@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import AllowAny
 
 from posts import models
 from posts.api import serializers as api_serializers
@@ -23,12 +24,13 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 class ArticleReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Article.objects.prefetch_related("category", "author")
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             if self.request.user.is_anonymous:
                 return api_serializers.ArticleSerializerPublic
-            return api_serializers.ArticleSerializer
+            return api_serializers.ArticleSerializerPrivate
         elif self.action == "list":
             return api_serializers.ArticleSerializerList
 

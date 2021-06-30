@@ -17,7 +17,24 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("id", "name", "slug")
 
 
-class ArticleSerializerMixin(serializers.ModelSerializer):
+class ArticleSerializer(serializers.ModelSerializer):
+    firstParagraph = serializers.CharField(source="first_paragraph")
+
+    class Meta:
+        model = models.Article
+        fields = (
+            "id",
+            "author",
+            "category",
+            "title",
+            "summary",
+            "firstParagraph",
+            "body",
+        )
+
+
+class ArticleSerializerList(serializers.ModelSerializer):
+    author = AuthorSerializer()
     category = serializers.StringRelatedField()
 
     class Meta:
@@ -25,23 +42,21 @@ class ArticleSerializerMixin(serializers.ModelSerializer):
         fields = ("id", "author", "category", "title", "summary")
 
 
-class ArticleSerializerList(serializers.ModelSerializer):
-    author = AuthorSerializer()
-
-    class Meta:
-        model = models.Article
-        fields = ("id", "author", "category", "title", "summary")
-
-
-class ArticleSerializerPublic(ArticleSerializerList):
-    firstParagraph = serializers.CharField(source="first_paragraph")
-
+class ArticleSerializerPublic(ArticleSerializer, ArticleSerializerList):
     class Meta:
         model = models.Article
         fields = ("id", "author", "category", "title", "summary", "firstParagraph")
 
 
-class ArticleSerializer(ArticleSerializerPublic):
+class ArticleSerializerPrivate(ArticleSerializer, ArticleSerializerList):
     class Meta:
         model = models.Article
-        fields = ("id", "author", "category", "title", "summary", "firstParagraph", "body")
+        fields = (
+            "id",
+            "author",
+            "category",
+            "title",
+            "summary",
+            "firstParagraph",
+            "body",
+        )
