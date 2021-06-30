@@ -4,6 +4,7 @@ RUN useradd -ms /bin/bash app
 USER app
 
 WORKDIR /home/app/app
+
 ENV PYTHONUNBUFFURED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
@@ -17,12 +18,11 @@ RUN pip install --upgrade pip && pip install -r requirements-dev.txt --user
 
 COPY . .
 
-
 FROM base as production
 
 COPY ./requirements-prod.txt requirements-prod.txt
 
-RUN pip install --upgrade pip && pip install -r requirements-dev.txt --user
+RUN pip install --upgrade pip && pip install -r requirements-prod.txt --user
 
 COPY . .
 
