@@ -52,10 +52,10 @@ class Category(IdModelMixin):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._actual_slug = self.name
+        self._name = self.name
 
     def save(self, *args, **kwargs) -> None:
-        if not self.slug or self._actual_slug != self.slug:
+        if not self.slug or self._name != self.name:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
